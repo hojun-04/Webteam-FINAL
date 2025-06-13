@@ -3,15 +3,68 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>블록체인 소개</title>
+    <title>블록체인 역사</title>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
     <style>
-      .blockchain-img-right {
-        float: right;
-        margin-left: 20px; /* 이미지를 왼쪽에 약간의 여백을 추가하여 텍스트와 겹치지 않게 합니다 /
-        margin-bottom: 40px; / 이미지 아래 여백 /
-        margin-top: -150px; / 이미지를 위로 10px 올립니다 */
+      body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      .section {
+        padding: 2rem;
+        max-width: 800px;
+        margin: auto;
+      }
+
+      .event-block {
+        background-color: #fff;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-block img {
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      .event-block a {
+        color: #1976d2;
+        text-decoration: underline;
+      }
+
+      .controls {
+        text-align: center;
+        margin-top: 2rem;
+      }
+
+      .controls button {
+        padding: 10px 16px;
+        font-size: 16px;
+        margin: 0 10px;
+        cursor: pointer;
+        background-color: #333;
+        color: white;
+        border: none;
+        border-radius: 6px;
+      }
+
+      .controls button:hover {
+        background-color: #555;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        margin-top: 2rem;
+        background-color: #f0f0f0;
+        font-size: 14px;
       }
     </style>
   </head>
@@ -19,10 +72,11 @@
     <nav class="navbar">
       <div class="logo">Blockchain</div>
       <ul class="nav-links">
-        <li><a href="index.html" class="active">소개</a></li>
+        <li><a href="index.html">소개</a></li>
         <li><a href="demo.html">구조</a></li>
         <li><a href="tech.html">기술</a></li>
         <li><a href="usage.html">활용</a></li>
+        <li><a href="history.html" class="active">역사</a></li>
         <li><a href="about.html">제작정보</a></li>
       </ul>
       <div class="burger" onclick="toggleMenu()">
@@ -31,73 +85,79 @@
         <div></div>
       </div>
     </nav>
+
     <section class="section">
-      <h1>블록체인이란?</h1>
-      <p>
-        블록체인은 데이터를 블록 단위로 묶어 체인처럼 연결한 분산형 디지털
-        장부입니다. 중앙 서버 없이 여러 참여자가 동시에 기록을 검증하고
-        공유하며, 위변조가 매우 어렵습니다. 주로 암호화폐, 스마트 계약, 공급망
-        관리 등 다양한 분야에 활용됩니다.
-      </p>
-
-      <h2>
-        역사
-        <img
-          src="image/bitcoin.png"
-          alt="비트코인"
-          style="width: 50px; vertical-align: middle; margin-right: 20px"
-        />
-      </h2>
-      <img
-        src="image/blockchain.png"
-        alt="블록체인"
-        class="blockchain-img-right"
-      />
-
-      <ul>
-        <li>
-          <strong
-            ><a
-              href="https://blog.mexc.com/ko/who-is-satoshi-nakamoto/"
-              target="_blank"
-              >2008년:</a
-            ></strong
-          >
-          사토시 나카모토가 비트코인 백서 발표
-        </li>
-        <li>
-          <strong
-            ><a
-              href="https://kr.cointelegraph.com/learn/articles/what-is-bitcoin"
-              target="_blank"
-              >2009년:</a
-            ></strong
-          >
-          비트코인 첫 거래 시작
-        </li>
-        <li class="history-item">
-          <strong>
-            <a
-              href="https://www.samsungsds.com/kr/insights/finance_series_ethereum.html"
-              target="_blank"
-              >2015년:</a
-            >
-          </strong>
-          이더리움 등장으로 스마트 계약 개념 도입
-        </li>
-
-        <li class="history-item">
-          <strong
-            ><a
-              href="https://shindonga.donga.com/economy/article/all/13/3295096/1"
-              target="_blank"
-              >2020년 이후:</a
-            ></strong
-          >
-          NFT, Web3, DAO 등 다양한 응용 확산
-        </li>
-      </ul>
+      <h1>🕰️ 블록체인 역사 체험</h1>
+      <div class="controls">
+        <button onclick="addBlock()">📜 다음 사건 보기</button>
+        <button onclick="resetBlocks()">🔄 초기화</button>
+      </div>
+      <div id="historyContainer"></div>
     </section>
-        <footer>© 2025 블록체인 웹사이트 - 구</footer>
+
+    <footer>© 2025 블록체인 웹사이트 - 역사</footer>
+
+    <script>
+      const events = [
+        {
+          year: '2008년',
+          title: '비트코인 백서 발표',
+          desc: '사토시 나카모토가 블록체인 개념을 담은 논문 발표',
+          image: 'image/bitcoin.png',
+          link: 'https://blog.mexc.com/ko/who-is-satoshi-nakamoto/',
+        },
+        {
+          year: '2009년',
+          title: '비트코인 첫 거래',
+          desc: '실제로 비트코인을 채굴하고 거래가 시작됨',
+          image: 'image/bitcoin.png',
+          link: 'https://kr.cointelegraph.com/learn/articles/what-is-bitcoin',
+        },
+        {
+          year: '2015년',
+          title: '이더리움 등장',
+          desc: '스마트 계약이 가능한 블록체인 플랫폼 출현',
+          image: 'image/ethereum.png',
+          link: 'https://www.samsungsds.com/kr/insights/finance_series_ethereum.html',
+        },
+        {
+          year: '2020년 이후',
+          title: 'NFT, Web3 확산',
+          desc: '블록체인이 다양한 분야로 확장됨',
+          image: 'image/nft.png',
+          link: 'https://shindonga.donga.com/economy/article/all/13/3295096/1',
+        },
+      ]
+
+      let currentIndex = 0
+
+      function addBlock() {
+        if (currentIndex >= events.length) return
+
+        const event = events[currentIndex]
+        const container = document.getElementById('historyContainer')
+        const isEthereum = event.title.includes('이더리움')
+
+        const block = document.createElement('div')
+        block.className = 'event-block'
+        block.innerHTML = `
+          <img src="${event.image}" alt="${event.title}" style="width: ${
+          isEthereum ? '80px' : '60px'
+        };" />
+          <p><strong>연도:</strong> ${event.year}</p>
+          <p><strong>사건:</strong> <a href="${event.link}" target="_blank">${
+          event.title
+        }</a></p>
+          <p><strong>설명:</strong> ${event.desc}</p>
+        `
+        container.appendChild(block)
+        currentIndex++
+      }
+
+      function resetBlocks() {
+        document.getElementById('historyContainer').innerHTML = ''
+        currentIndex = 0
+      }
+    </script>
   </body>
 </html>
